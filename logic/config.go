@@ -14,12 +14,12 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
-package main
+package logic
 
-import (
-	"github.com/bfv/pasoe-cli/cmd"
-)
-
-func main() {
-	cmd.Execute()
+type PasInstance struct {
+	Protocol string
+	Host     string
+	Port     int
+	User     string
+	Password string
 }

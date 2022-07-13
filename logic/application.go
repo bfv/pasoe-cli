@@ -14,12 +14,21 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
-package main
+package logic
 
-import (
-	"github.com/bfv/pasoe-cli/cmd"
-)
+import "fmt"
 
-func main() {
-	cmd.Execute()
+func getApplicationNames(inst PasInstance) []string {
+
+	var apps []string
+
+	res, err := doRequest("GET", inst, "/oemanager/applications")
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		oeres, _ := readJson(res)
+		apps, _ = extractApplicationNames(oeres)
+	}
+
+	return apps
 }

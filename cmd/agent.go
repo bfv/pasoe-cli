@@ -17,7 +17,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/bfv/pasoe-cli/logic"
@@ -27,16 +26,9 @@ import (
 // agentCmd represents the agent command
 var agentCmd = &cobra.Command{
 	Use:   "agent",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("agent called")
-	},
+	Short: "list/add/kill agents",
+	Long:  `The agent command enables listing, adding and killing. Can be be done per OEABL application. By default the list subcommand is executed.`,
+	Run:   listAgents,
 }
 
 var agentAddCmd = &cobra.Command{

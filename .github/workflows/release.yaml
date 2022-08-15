@@ -1,6 +1,9 @@
-on:
-  release:
-    types: [created]
+on: 
+  push:
+    branches:
+      - 'master'
+    tags:
+      - 'v*'
 
 jobs:
   releases-matrix:

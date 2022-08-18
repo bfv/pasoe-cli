@@ -9,5 +9,5 @@ import (
 var vStr string
 
 func DisplayVersion() {
-	fmt.Printf("%v\n", vStr)
+	fmt.Printf("\n%v\n", vStr)
 }

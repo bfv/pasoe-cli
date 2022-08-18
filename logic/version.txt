@@ -1,6 +1,4 @@
-pasoe-cli 0.1.1
-
-by Bronco Oostermeyer
-
+pasoe-cli v0.2.0
+by Bronco Oostermeyer 2022
 Published under GPL3
 https://github.com/bfv/pasoe-cli

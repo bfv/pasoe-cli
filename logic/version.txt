@@ -1,0 +1,6 @@
+pasoe-cli 0.1.1
+
+by Bronco Oostermeyer
+
+Published under GPL3
+https://github.com/bfv/pasoe-cli

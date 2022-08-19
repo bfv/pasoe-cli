@@ -22,20 +22,29 @@ For help on the commands:\
 `pasoe --help`
 
 There some global option to this CLI tool:
-```Usage:
-  pasoe-cli agent list [flags]
+```
+A CLI tool for PAS instance (agent) management
+
+Usage:
+  pasoe [command]
+
+Available Commands:
+  agent       list/add/kill agents
+  application Command for action related to (OEABL) applications
+  completion  Generate the autocompletion script for the specified shell
+  help        Help about any command
+  version     Displays the version number
 
 Flags:
-  -h, --help   help for list
-
-Global Flags:
-      --app string        Application name
       --config string     config file (default is $HOME/.pasoe-cli.yaml)
+  -h, --help              help for pasoe
       --host string       hostname (default "localhost")
   -p, --password string   password (default "tomcat")
       --port int          port (default 8810)
       --protocol string   protocol, http or https (default "http")
   -u, --user string       username (default "tomcat")
+
+Use "pasoe [command] --help" for more information about a command.
 ```
 
 By: Bronco Oostermeyer, 2022

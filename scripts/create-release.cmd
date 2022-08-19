@@ -18,7 +18,7 @@ sed -i "s/${version}/%1/" logic/version.txt
 
 rem 2. commit the file
 git add logic/version.txt
-git commit -m "bumped version to %1"
+git commit -m "release version %1"
 
 rem 3. create, commit an annotated tag
 git tag -a %1 -m "release: %1"

@@ -22,9 +22,10 @@ import (
 
 // versionCmd represents the version command
 var versionCmd = &cobra.Command{
-	Use:   "version",
-	Short: "Displays the version number",
-	Long:  ``,
+	Use:     "version",
+	Aliases: []string{"about"},
+	Short:   "Displays the version number",
+	Long:    ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		displayVersion()
 	},

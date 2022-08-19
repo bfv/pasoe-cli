@@ -1,6 +1,7 @@
 # pasoe-cli
 
 A standalone CLI tool for managing agents, no (nodejs, Java, etc) runtime needed. The primary aim for now is to list, add and kill agents.
+PREREQUISITE: `oemanager` must be installed.
 
 Example:
 

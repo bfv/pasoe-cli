@@ -16,7 +16,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 package logic
 
-import "fmt"
+import (
+	"fmt"
+	"net/url"
+
+	"github.com/bfv/pasoe-cli/model"
+)
 
 func getApplicationNames(inst PasInstance) []string {
 
@@ -31,4 +36,52 @@ func getApplicationNames(inst PasInstance) []string {
 	}
 
 	return apps
+}
+
+func GetApplications(inst PasInstance) []model.Application {
+
+	var apps []model.Application
+
+	res, err := doRequest("GET", inst, "/oemanager/applications")
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		oeres, _ := readJson(res)
+		apps, _ = extractApplications(oeres)
+	}
+
+	return apps
+}
+
+func ListApplications(inst PasInstance, verbose bool) {
+
+	apps := GetApplications(inst)
+
+	for _, app := range apps {
+
+		fmt.Printf("%v\n", app.Name)
+
+		if verbose {
+			for _, webapp := range app.Webapps {
+				fmt.Printf("  %v (%v, %v, %v)\n", webapp.Name, getPort(webapp.URI), getPort(webapp.SecureURI), webapp.State)
+				for _, transport := range webapp.Transports {
+					if transport.State != "ENABLED" {
+						continue
+					}
+					fmt.Printf("    %-4s: %v (%v)\n", transport.Name, getPath(transport.URI), transport.Status)
+				}
+			}
+		}
+	}
+
+}
+
+func getPath(tUrl string) string {
+	u, _ := url.Parse(tUrl)
+	return u.Path
+}
+
+func getPort(tUrl string) string {
+	u, _ := url.Parse(tUrl)
+	return u.Port()
 }

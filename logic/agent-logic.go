@@ -38,6 +38,20 @@ func readJson(res *http.Response) (model.Response, error) {
 	return resp, err
 }
 
+func extractApplications(res model.Response) ([]model.Application, error) {
+
+	var appResponse model.ApplicationResponse
+	var apps []model.Application
+
+	err := json.Unmarshal(res.Result, &appResponse)
+	if err != nil {
+		printError(err)
+	} else {
+		apps = append(apps, appResponse.Applications...)
+	}
+	return apps, err
+}
+
 func extractApplicationNames(res model.Response) ([]string, error) {
 
 	var appResponse model.ApplicationResponse

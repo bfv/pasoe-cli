@@ -32,9 +32,32 @@ type ApplicationResponse struct {
 }
 
 type Application struct {
-	Name   string `json:"name"`
-	Type   string `json:"type"`
-	OEType string `json:"oetype"`
+	Name        string   `json:"name"`
+	Version     string   `json:"version"`
+	Description string   `json:"description"`
+	Type        string   `json:"type"`
+	Webapps     []Webapp `json:"webapps"`
+	OEType      string   `json:"oetype"`
+}
+
+type Webapp struct {
+	Name        string      `json:"name"`
+	URI         string      `json:"uri"`
+	SecureURI   string      `json:"securedUri"`
+	Description string      `json:"description"`
+	Type        string      `json:"type"`
+	State       string      `json:"state"`
+	Transports  []Transport `json:"transports"`
+}
+
+type Transport struct {
+	Name        string `json:"name"`
+	URI         string `json:"uri"`
+	SecureURI   string `json:"securedUri"`
+	Description string `json:"description"`
+	State       string `json:"state"`
+	Status      string `json:"status"`
+	OEType      string `json:"oetype"`
 }
 
 type AgentsResponse struct {

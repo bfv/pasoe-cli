@@ -81,3 +81,17 @@ func extractAgents(res model.Response) ([]model.Agent, error) {
 	}
 	return agents, err
 }
+
+func extractAgentSessions(res model.Response) ([]model.AgentSession, error) {
+	var agentSessionResponse model.AgentSessionsReponse
+	var agentSessions []model.AgentSession
+
+	err := json.Unmarshal(res.Result, &agentSessionResponse)
+	if err != nil {
+		printError(err)
+	} else {
+		agentSessions = append(agentSessions, agentSessionResponse.AgentsSessions...)
+	}
+
+	return agentSessions, err
+}

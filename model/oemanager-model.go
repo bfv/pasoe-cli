@@ -69,3 +69,18 @@ type Agent struct {
 	Pid      string `json:"pid"`
 	State    string `json:"state"`
 }
+
+type AgentSessionsReponse struct {
+	AgentsSessions []AgentSession `json:"AgentSession"`
+}
+
+type AgentSession struct {
+	SessionId            int    `json:"SessionId"`
+	SessionState         string `json:"SessionState"`
+	StartTime            string `json:"StartTime"`
+	EndTime              string `json:"EndTime"`
+	ThreadId             int    `json:"ThreadId"`
+	ConnectionId         int    `json:"ConnectionId"`
+	SessionExternalState int    `json:"SessionExternalState"`
+	SessionMemory        int    `json:"SessionMemory"`
+}

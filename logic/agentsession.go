@@ -56,7 +56,7 @@ func ListAgentSessions(inst PasInstance, apps []string, params ListAgentSessionP
 			}
 
 			color := ""
-			if params.Treshold > -1 && as.SessionMemory > (params.Treshold*1000000) {
+			if params.Treshold > -1 && as.SessionMemory > (params.Treshold*1024*1024) {
 				color = red
 			}
 			fmt.Printf("  session: %v, %vmem: %v%v [%v]", as.SessionId, color, ByteCountIEC(as.SessionMemory), reset, as.SessionState)

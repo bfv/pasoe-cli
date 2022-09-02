@@ -30,11 +30,12 @@ Usage:
   pasoe [command]
 
 Available Commands:
-  agent       list/add/kill agents
-  application Command for action related to (OEABL) applications
-  completion  Generate the autocompletion script for the specified shell
-  help        Help about any command
-  version     Displays the version number
+  agent        list/add/kill agents
+  agentsession A command handling agent sessions
+  application  Command for action related to (OEABL) applications
+  completion   Generate the autocompletion script for the specified shell
+  help         Help about any command
+  version      Displays the version number
 
 Flags:
       --config string     config file (default is $HOME/.pasoe-cli.yaml)

@@ -31,6 +31,16 @@ type ListAgentSessionParams struct {
 	Verbose           bool
 }
 
+type KillAgentSessionParams struct {
+	Apps      []string
+	SessionId int
+	AgentId   string
+	Pid       int
+	Forced    bool
+	Threshold int // in MiB
+	KillAll   bool
+}
+
 func ListAgentSessions(inst PasInstance, apps []string, params ListAgentSessionParams) {
 
 	if len(apps) == 0 {
@@ -51,7 +61,7 @@ func ListAgentSessions(inst PasInstance, apps []string, params ListAgentSessionP
 			}
 
 			if !headerDisplayed {
-				fmt.Printf("[%v] sessions for agent: %v (pid: %v)\n", app, agent.AgentdId, agent.Pid)
+				fmt.Printf("[%v] sessions for agent: %v (pid: %v)\n", app, agent.AgentId, agent.Pid)
 				headerDisplayed = true
 			}
 
@@ -68,9 +78,70 @@ func ListAgentSessions(inst PasInstance, apps []string, params ListAgentSessionP
 	})
 }
 
+func KillAgentSessions(inst PasInstance, apps []string, params KillAgentSessionParams) {
+
+	if len(apps) == 0 {
+		apps = getApplicationNames(inst)
+	}
+
+	iterateAgents(inst, apps, func(app string, agent model.Agent) {
+		iterateAgentSessions(inst, app, agent, func(app string, as model.AgentSession) {
+			if evalKill(params, app, agent, as) {
+				killSession(inst, app, agent, as.SessionId, params) // candidate for Go routine?
+			}
+		})
+	})
+}
+
+func killSession(inst PasInstance, app string, agent model.Agent, sessionId int, params KillAgentSessionParams) error {
+
+	fmt.Printf("[%v] kill session %v on agent %v", app, sessionId, agent.Pid)
+	untrappable := "0"
+	if params.Forced {
+		untrappable = "1"
+	}
+	path := fmt.Sprintf("/oemanager/applications/%v/agents/%v/sessions/%v?terminateOpt=%v", app, agent.AgentId, sessionId, untrappable)
+	fmt.Printf("DELETE: %v\n", path)
+	res, err := doRequest("DELETE", inst, path)
+
+	if err == nil && res.StatusCode == 200 {
+		fmt.Printf("  OK\n")
+	} else {
+		fmt.Printf("%v\n", err)
+		os.Exit(1)
+	}
+
+	return nil
+}
+
+func evalKill(params KillAgentSessionParams, app string, agent model.Agent, as model.AgentSession) bool {
+
+	//fmt.Printf("eval %v on agentId %v\n", agent.Pid, as.SessionId)
+	agentPid, _ := strconv.Atoi(agent.Pid)
+	kill := true
+
+	if params.Pid > 0 && params.Pid != agentPid {
+		kill = false
+	}
+
+	if len(params.Apps) > 0 && !contains(params.Apps, app) {
+		kill = false
+	}
+
+	kill = kill && ((agent.AgentId == params.AgentId && (as.SessionId == params.SessionId)) ||
+		(agentPid == params.Pid && (as.SessionId == params.SessionId || params.KillAll)) ||
+		(contains(params.Apps, app) && params.KillAll) ||
+		(agent.Pid == params.AgentId && params.KillAll) ||
+		(params.Threshold > 0 && as.SessionMemory > params.Threshold*1024*1024) ||
+		(params.Pid <= 0 && len(params.Apps) == 0 && params.KillAll))
+
+	return kill
+
+}
+
 func iterateAgentSessions(inst PasInstance, app string, agent model.Agent, f func(app string, as model.AgentSession)) {
 
-	path := fmt.Sprintf("/oemanager/applications/%v/agents/%v/sessions", app, agent.AgentdId)
+	path := fmt.Sprintf("/oemanager/applications/%v/agents/%v/sessions", app, agent.AgentId)
 	res, err := doRequest("GET", inst, path)
 
 	if err == nil && res.StatusCode == 200 {

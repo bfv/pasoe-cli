@@ -65,9 +65,9 @@ type AgentsResponse struct {
 }
 
 type Agent struct {
-	AgentdId string `json:"agentId"`
-	Pid      string `json:"pid"`
-	State    string `json:"state"`
+	AgentId string `json:"agentId"`
+	Pid     string `json:"pid"`
+	State   string `json:"state"`
 }
 
 type AgentSessionsReponse struct {

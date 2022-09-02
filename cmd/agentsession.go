@@ -37,6 +37,13 @@ var agentSessionListCmd = &cobra.Command{
 	Run:   listAgentSessions,
 }
 
+var agentSessionKillCmd = &cobra.Command{
+	Use:   "kill",
+	Short: "Kill agent sessions",
+	Long:  ``,
+	Run:   killAgentSessions,
+}
+
 func init() {
 	rootCmd.AddCommand(agentSessionCmd)
 
@@ -47,6 +54,13 @@ func init() {
 	agentSessionListCmd.Flags().Int("threshold", -1, "Treshold in MiB")
 	agentSessionListCmd.Flags().BoolP("verbose", "v", false, "Verbose output")
 	agentSessionListCmd.Flags().Bool("ato", false, "List entries above threshold only")
+
+	agentSessionCmd.AddCommand(agentSessionKillCmd)
+	agentSessionKillCmd.Flags().Int("pid", -1, "Pid")
+	agentSessionKillCmd.Flags().Int("sid", -1, "SessionId")
+	agentSessionKillCmd.Flags().Bool("all", false, "Kill all agent session for either app or agent")
+	agentSessionKillCmd.Flags().Int("threshold", -1, "Kill *all* agent sessions with mem usage above treshold (in MiB)")
+	agentSessionKillCmd.Flags().Bool("force", false, "Kill with untrappable STOP")
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
@@ -73,4 +87,25 @@ func listAgentSessions(cmd *cobra.Command, args []string) {
 		AboveTresholdOnly: aboveTresholdOnly,
 		Verbose:           verbose,
 	})
+}
+
+func killAgentSessions(cmd *cobra.Command, args []string) {
+
+	apps := getApps(cmd)
+
+	pid, _ := cmd.Flags().GetInt("pid")
+	sessionId, _ := cmd.Flags().GetInt("sid")
+	killAll, _ := cmd.Flags().GetBool("all")
+	threshold, _ := cmd.Flags().GetInt("threshold")
+	forced, _ := cmd.Flags().GetBool("force")
+
+	params := logic.KillAgentSessionParams{
+		Apps:      apps,
+		Pid:       pid,
+		SessionId: sessionId,
+		KillAll:   killAll,
+		Threshold: threshold,
+		Forced:    forced,
+	}
+	logic.KillAgentSessions(instance, apps, params)
 }

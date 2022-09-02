@@ -55,15 +55,15 @@ func KillAgents(inst PasInstance, params KillAgentParams) {
 
 	iterateAgents(inst, params.Apps, func(app string, agent model.Agent) {
 
-		if len(params.Ids) > 0 && !contains(params.Ids, agent.AgentdId) {
+		if len(params.Ids) > 0 && !contains(params.Ids, agent.AgentId) {
 			return
 		}
 
-		res2, _ := doRequest("DELETE", inst, fmt.Sprintf("/oemanager/applications/%v/agents/%v", app, agent.AgentdId))
+		res2, _ := doRequest("DELETE", inst, fmt.Sprintf("/oemanager/applications/%v/agents/%v", app, agent.AgentId))
 		if res2.StatusCode == 200 {
-			fmt.Printf("[%v] agent killed: %v (pid: %v)\n", app, agent.AgentdId, agent.Pid)
+			fmt.Printf("[%v] agent killed: %v (pid: %v)\n", app, agent.AgentId, agent.Pid)
 		} else {
-			fmt.Printf("error killing agent [%v] %v (pid: %v)", app, agent.AgentdId, agent.Pid)
+			fmt.Printf("error killing agent [%v] %v (pid: %v)", app, agent.AgentId, agent.Pid)
 			os.Exit(1)
 		}
 
@@ -81,7 +81,7 @@ func ListAgents(inst PasInstance, apps []string) {
 	}
 
 	iterateAgents(inst, apps, func(app string, agent model.Agent) {
-		fmt.Printf("[%v] agent: %v (pid: %v)\n", app, agent.AgentdId, agent.Pid)
+		fmt.Printf("[%v] agent: %v (pid: %v)\n", app, agent.AgentId, agent.Pid)
 	})
 }
 

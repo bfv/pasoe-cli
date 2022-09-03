@@ -100,8 +100,8 @@ func killSession(inst PasInstance, app string, agent model.Agent, sessionId int,
 	if params.Forced {
 		untrappable = "1"
 	}
+
 	path := fmt.Sprintf("/oemanager/applications/%v/agents/%v/sessions/%v?terminateOpt=%v", app, agent.AgentId, sessionId, untrappable)
-	fmt.Printf("DELETE: %v\n", path)
 	res, err := doRequest("DELETE", inst, path)
 
 	if err == nil && res.StatusCode == 200 {

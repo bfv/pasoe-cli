@@ -84,3 +84,5 @@ type AgentSession struct {
 	SessionExternalState int    `json:"SessionExternalState"`
 	SessionMemory        int    `json:"SessionMemory"`
 }
+
+// type OEABLObject...

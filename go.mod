@@ -1,6 +1,6 @@
 module github.com/bfv/pasoe-cli
 
-go 1.18
+go 1.20
 
 require github.com/spf13/viper v1.12.0
 

@@ -49,5 +49,5 @@ Flags:
 Use "pasoe [command] --help" for more information about a command.
 ```
 
-By: Bronco Oostermeyer, 2022
+By: Bronco Oostermeyer, 2022, 2023
 License: GPL3

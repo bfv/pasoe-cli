@@ -1,4 +1,4 @@
-pasoe-cli v1.2.1
-  Bronco Oostermeyer 2022
+pasoe-cli v1.2.2-rc1
+  Bronco Oostermeyer 2022, 2023
   Published under GPL3
   https://github.com/bfv/pasoe-cli
